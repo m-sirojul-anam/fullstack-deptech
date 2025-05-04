@@ -7,19 +7,26 @@ import TextLink from '@/components/text-link';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '@/components/ui/select';
 import AuthLayout from '@/layouts/auth-layout';
 
 type RegisterForm = {
-    name: string;
+    first_name: string;
+    last_name: string;
     email: string;
+    birthdate: string;
+    gender: 'F' | 'M';
     password: string;
     password_confirmation: string;
 };
 
 export default function Register() {
     const { data, setData, post, processing, errors, reset } = useForm<Required<RegisterForm>>({
-        name: '',
+        first_name: '',
+        last_name: '',
         email: '',
+        birthdate: '',
+        gender: 'M',
         password: '',
         password_confirmation: '',
     });
@@ -37,20 +44,42 @@ export default function Register() {
             <form className="flex flex-col gap-6" onSubmit={submit}>
                 <div className="grid gap-6">
                     <div className="grid gap-2">
-                        <Label htmlFor="name">Name</Label>
+                        <Label htmlFor="first_name">First name</Label>
+
                         <Input
-                            id="name"
+                            id="first_name"
                             type="text"
+                            className="mt-1 block w-full"
                             required
                             autoFocus
                             tabIndex={1}
-                            autoComplete="name"
-                            value={data.name}
-                            onChange={(e) => setData('name', e.target.value)}
+                            autoComplete="first_name"
+                            value={data.first_name}
+                            onChange={(e) => setData('first_name', e.target.value)}
                             disabled={processing}
-                            placeholder="Full name"
+                            placeholder="First name"
                         />
-                        <InputError message={errors.name} className="mt-2" />
+
+                        <InputError className="mt-2" message={errors.first_name} />
+                    </div>
+
+                    <div className="grid gap-2">
+                        <Label htmlFor="last_name">Last name</Label>
+
+                        <Input
+                            id="last_name"
+                            type="text"
+                            className="mt-1 block w-full"
+                            required
+                            tabIndex={2}
+                            autoComplete="last_name"
+                            value={data.last_name}
+                            onChange={(e) => setData('last_name', e.target.value)}
+                            disabled={processing}
+                            placeholder="Last name"
+                        />
+
+                        <InputError className="mt-2" message={errors.last_name} />
                     </div>
 
                     <div className="grid gap-2">
@@ -67,6 +96,49 @@ export default function Register() {
                             placeholder="email@example.com"
                         />
                         <InputError message={errors.email} />
+                    </div>
+
+                    <div className="grid gap-2">
+                        <Label htmlFor="birthdate">Birthdate</Label>
+
+                        <Input
+                            id="birthdate"
+                            type="date"
+                            className="mt-1 block w-full"
+                            required
+                            tabIndex={4}
+                            autoComplete="birthdate"
+                            value={data.birthdate}
+                            onChange={(e) => setData('birthdate', e.target.value)}
+                            disabled={processing}
+                        />
+
+                        <InputError className="mt-2" message={errors.birthdate} />
+                    </div>
+
+                    <div className="grid gap-2">
+                        <Label htmlFor="gender">Gender</Label>
+                        <Select
+                            name="gender"
+                            required
+                            autoComplete="gender"
+                            value={data.gender}
+                            onValueChange={(value) => setData('gender', value as 'F' | 'M')}
+                            disabled={processing}
+                        >
+                            <SelectTrigger className="mt-1 w-full">
+                                <SelectValue placeholder="Select gender" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectGroup>
+                                    <SelectLabel>Gender</SelectLabel>
+                                    <SelectItem value="M">Male</SelectItem>
+                                    <SelectItem value="F">Female</SelectItem>
+                                </SelectGroup>
+                            </SelectContent>
+                        </Select>
+
+                        <InputError className="mt-2" message={errors.gender} />
                     </div>
 
                     <div className="grid gap-2">
