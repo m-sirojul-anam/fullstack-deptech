@@ -2,7 +2,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import AppLayout from '@/layouts/app-layout';
 import { BreadcrumbItem, Leave } from '@/types';
-import { Head, Link } from '@inertiajs/react';
+import { Head, Link, useForm } from '@inertiajs/react';
 import { Eye, Pencil, Trash2 } from 'lucide-react';
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -13,8 +13,7 @@ const breadcrumbs: BreadcrumbItem[] = [
 ];
 
 export default function Leaves({ leaves }: { leaves: Leave[] }) {
-    console.log(leaves);
-
+    const { delete: destroy, get } = useForm();
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Leaves" />
@@ -73,13 +72,24 @@ export default function Leaves({ leaves }: { leaves: Leave[] }) {
                                 <td className="px-6 py-4">{leave.employee?.last_name}</td>
                                 <td className="px-6 py-4">{leave.employee?.email}</td>
                                 <td className="px-6 py-4">{leave.reason}</td>
-                                <td className="px-6 py-4">19 February 2025</td>
-                                <td className="px-6 py-4">19 February 2025</td>
+                                <td className="px-6 py-4">{leave.start_date}</td>
+                                <td className="px-6 py-4">{leave.end_date}</td>
                                 <td className="flex gap-2 px-6 py-4">
-                                    <Pencil className="size-4 hover:cursor-pointer" />
-                                    <Trash2 className="size-4 hover:cursor-pointer" />
-                                    <Eye className="size-4 hover:cursor-pointer" />
-                                </td>
+                                            <Button
+                                                variant={'secondary'}
+                                                onClick={() => get(route('leaves.edit', { id: leave.id }))}
+                                                className="cursor-pointer"
+                                            >
+                                                <Pencil className="size-4" />
+                                            </Button>
+                                            <Button
+                                                variant={'secondary'}
+                                                onClick={() => destroy(route('leaves.destroy', { id: leave.id }))}
+                                                className="cursor-pointer"
+                                            >
+                                                <Trash2 className="size-4" />
+                                            </Button>
+                                        </td>
                             </tr>)))}
                         </tbody>
                     </table>

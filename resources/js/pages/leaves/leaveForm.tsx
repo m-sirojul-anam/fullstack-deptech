@@ -66,7 +66,7 @@ export default function LeaveForm({ leave, employees, leaveTypes }: { leave: Lea
                                         <SelectGroup>
                                             <SelectLabel>Employee</SelectLabel>
                                             {employees.map((employee) => (
-                                                <SelectItem value={`${employee.id}`}>
+                                                <SelectItem key={employee.id} value={`${employee.id}`}>
                                                     {employee.email} ({employee.first_name} {employee.last_name})
                                                 </SelectItem>
                                             ))}
@@ -93,7 +93,7 @@ export default function LeaveForm({ leave, employees, leaveTypes }: { leave: Lea
                                         <SelectGroup>
                                             <SelectLabel>Leave Type</SelectLabel>
                                             {leaveTypes.map((leaveType) => (
-                                                <SelectItem value={`${leaveType.id}`}>{leaveType.name}</SelectItem>
+                                                <SelectItem key={leaveType.id} value={`${leaveType.id}`}>{leaveType.name}</SelectItem>
                                             ))}
                                         </SelectGroup>
                                     </SelectContent>
